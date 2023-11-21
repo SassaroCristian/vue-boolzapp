@@ -1,0 +1,33 @@
+.webApp-container {
+    padding-top: 1%;
+    width: 90vw;
+    margin: auto;
+}
+
+.avatar-pic {
+    border-radius: 100%;
+    width: 4rem;
+}
+
+.icons {
+   font-size: 1.8rem;
+   padding: 10px;
+}
+
+.chats-preview-box {
+    height: 80vh;
+    overflow: scroll;
+    overflow-x: hidden;
+    
+}
+
+.chats-preview-content {
+    height: 2000px;
+}
+
+.chat-box {
+    height: 84.14vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
