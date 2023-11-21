@@ -29,5 +29,28 @@
     height: 84.14vh;
     overflow: scroll;
     overflow-x: hidden;
+    background-image: url(../img/mine.jpg);
 }
 
+.user-sent-message {
+    align-self: flex-end;
+    text-align: right;
+    background-color: lightgreen;
+    margin-right: 10px;  
+    margin-top: 10px;
+    width: fit-content;  
+    padding: 5px 15px;
+    padding-top: 10px;
+    border-radius: 6px;
+}
+
+.user-recived-message {
+    text-align: left;
+    background-color: white;  
+    margin-left: 10px;  
+    margin-top: 10px;
+    width: fit-content;
+    padding: 5px 15px;
+    padding-top: 10px;
+    border-radius: 6px;
+}
