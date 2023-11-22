@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/dbg-bg.css">
-   
+
     <title>Document</title>
 </head>
+
 <body>
     <div class="webApp-container" id="app">
-        <div class="flex flex-row">
-            <div class="basis-4/12 bg-red">
-                <div class="grid-row: 1 / -1; flex flex-row p-2.5" >
+        <div class="flex flex-row container-preview">
+            <div class="basis-4/12 border-2">
+                <div class="grid-row: 1 / -1; flex flex-row p-2.5">
 
                     <div class="basis-6/12 flex items-center ">
                         <img class="avatar-pic" src="img/avatar_io.jpg" alt="">
@@ -28,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="grid-row: 1 / -1; bg-blue flex p-5">
-                    <i class="fas fas fa-bell-slash icons rounded-full bg-white"></i>
+                <div class="grid-row: 1 / -1; bg-light-blue flex h-24 p-5">
+                    <i class="fas pt-3 fas fa-bell-slash icons rounded-full bg-white color-light-blue"></i>
                     <div class="pl-2">
                         <h3>Ricevi notifiche di nuovi messaggi</h3>
                         <a href="#">Attiva notifiche desktop</a>
@@ -37,89 +41,79 @@
 
                 </div>
                 <div class="grid-row: 1 / -1;">
-                    <form>   
+                    <form>
                         <div class="relative p-1">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cerca o inizia una nuova chat" required>
+                            <input type="search" id="default-search" @input="searchContacts" v-model="searchText" class="block w-full p-2 ps-10 text-sm  text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cerca una chat..." required>
                         </div>
                     </form>
                 </div>
 
                 <div class="grid-row: 1 / -1; chats-preview-box">
-                    <div class="chats-preview-content bg-yellow"></div>
-                    <!-- qui verranno generate le chats preview   -->
+                    <div class="chats-preview-content">
+                        <div class="" v-for="(contact, index) in contacts" :key="index" v-show="contact.visible">
+                            <hr>
+                            <div class="contact-item flex flex-row ml-5" @click="setActiveContact(contact)">
+                                <img class="avatar-pic" :src="contact.avatar" alt="">
+                                <div class="items-center pl-2 pt-3 w-full">
+                                    <p>{{ contact.name }}</p>
+                                    <p class="text-xs">{{ getLastMessage(contact.messages) }}</p>
+                                    <p class="text-xs text-right">{{ getLastMessageDate(contact.messages) }}</p>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            
-            <div class="basis-8/12 bg-blue">
+
+            <div class="basis-8/12 border-2 border-l-0 b h-fit">
                 <div class="grid-row: 1 / -1; flex flex-row p-2.5 items-center">
-                    <div class="basis-10/12 flex items-center ">
-                        <img class="avatar-pic" src="img/avatar_1.jpg" alt="">
-                        <div>
-                            <h3>Michele</h3>
-                            <p>last seen</p>
+                    <div v-if="activeContact" class="basis-10/12 flex items-center ">
+                        <img class="avatar-pic" :src="activeContact.avatar" alt="">
+                        <div class="pl-2">
+                            <p>{{ activeContact.name }}</p>
+                            <p>Last seen</p>
                         </div>
-                        
                     </div>
 
                     <div class="basis-6/12 flex items-center justify-end ">
-                            <i class="fas fa-circle-notch icons"></i>
-                            <i class="fas fab fa-facebook-messenger icons"></i>
-                            <i class="fas fas fa-ellipsis-v icons"></i>
-                        </div>
+                        <i class="fas fa-circle-notch icons"></i>
+                        <i class="fas fab fa-facebook-messenger icons"></i>
+                        <i class="fas fas fa-ellipsis-v icons"></i>
+                    </div>
                 </div>
                 <div class="grid-row: 1 / -1; chat-box">
                     <div class="flex flex-col p-3">
-                        <div class="user-sent-message">
-                            <p >sjnfjseifnesifnbusnfu</p>
-                            <p>ora</p>
-                        </div>
-                        <div class="user-recived-message flex flex-col">
-                            <p >sjnfjseifnesifoemfiemfioemnfinbusnfu</p>
-                            <p>ora</p>
-                        </div>
-                        <div class="user-sent-message">
-                            <p >sjnfjseifnesifnbusnfu</p>
-                            <p>ora</p>
-                        </div>
-                        <div class="user-sent-message">
-                            <p >sjnfjseifnesifnbusnfu</p>
-                            <p>ora</p>
-                        </div>
-
-                        <div class="user-recived-message flex flex-col">
-                            <p >sjnfjseifnesifoemfiemfioemnfinbusnfu</p>
-                            <p>ora</p>
-                        </div>
-                        <div class="user-recived-message flex flex-col">
-                            <p >sjnfjseifnesifoemfiemfioemnfinbusnfu</p>
-                            <p>ora</p>
-                        </div>
-                        <div class="user-recived-message flex flex-col">
-                            <p >sjnfjseifnesifoemfiemfioemnfinbusnfu</p>
-                            <p>ora</p>
-                        </div>
+                        <chat-message v-for="(message, index) in activeContactMessages" :key="index" :message="message"></chat-message>
                     </div>
                 </div>
                 <div class="grid-row: 1 / -1;">
                     <div class="grid-row: 1 / -1; flex flex-row items-center columns-3 ">
                         <div class="w-full">
-                            <form class="w-full bg-gray-100 ">
+                            <form @keyup.enter="sendMessage" class="w-full bg-gray-100 ">
                                 <label for="chat" class="sr-only">Your message</label>
-                                    <div class="flex items-center px-3 py-2  ">
-                                        <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer">
-                                            <div class=""><i class="far fa-smile icons"></i></div>
-                                            <span class="sr-only">Add emoji</span>
-                                        </button>
-                                        <textarea id="chat" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 " placeholder="Scrivi un messaggio..."></textarea>
-                                            <button type="submit" class="inline-flex justify-center rounded-full cursor-pointer ">
-                                            <div class=""><i class="far fas fa-microphone icons text-gray-500"></i></div>
-                                        </button>
-                                    </div>
+                                <div class="flex items-center px-3 py-2  ">
+                                    <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer">
+                                        <div class=""><i class="far fa-smile icons"></i></div>
+                                        <span class="sr-only">Add emoji</span>
+                                    </button>
+                                    <textarea id="chat" rows="1"
+                                        class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 "
+                                        placeholder="Scrivi un messaggio..."></textarea>
+                                    <button type="submit"
+                                        class="inline-flex justify-center rounded-full cursor-pointer ">
+                                        <div class=""><i class="far fas fa-microphone icons"></i></div>
+                                    </button>
+                                </div>
                             </form>
                         </div>
 
@@ -128,11 +122,12 @@
             </div>
         </div>
     </div>
-          
 
 
-    <script src="main.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>

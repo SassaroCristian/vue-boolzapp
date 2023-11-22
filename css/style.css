@@ -4,6 +4,9 @@
     margin: auto;
 }
 
+.container-preview {
+    height: 701px !important;
+}
 .avatar-pic {
     border-radius: 100%;
     width: 4rem;
@@ -12,21 +15,22 @@
 .icons {
    font-size: 1.8rem;
    padding: 10px;
+   color: #B0AFAD;
 }
 
 .chats-preview-box {
-    height: 80vh;
+    height: 470px;
     overflow: scroll;
     overflow-x: hidden;
     
 }
 
 .chats-preview-content {
-    height: 2000px;
+    height: fit-content;
 }
 
 .chat-box {
-    height: 84.14vh;
+    height: 532px;
     overflow: scroll;
     overflow-x: hidden;
     background-image: url(../img/mine.jpg);
@@ -35,13 +39,14 @@
 .user-sent-message {
     align-self: flex-end;
     text-align: right;
-    background-color: lightgreen;
+    background-color: #D5F9BA;
     margin-right: 10px;  
     margin-top: 10px;
     width: fit-content;  
     padding: 5px 15px;
     padding-top: 10px;
     border-radius: 6px;
+    max-width: 45%;
 }
 
 .user-recived-message {
@@ -53,4 +58,17 @@
     padding: 5px 15px;
     padding-top: 10px;
     border-radius: 6px;
+    max-width: 45%;
+}
+
+.bg-light-blue {
+    background-color: #8EDAFC;
+}
+
+.color-light-blue {
+    color: #8EDAFC;
+}
+
+.contact-item {
+    padding:10px;
 }
